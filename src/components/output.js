@@ -1,10 +1,10 @@
 const Output = () => {
   return (
-    <div className="px-4 pt-6 space-y-4 lg:px-6">
+    <div className="px-4 pt-6 space-y-4 lg:px-6 w-1/2">
       <div className="flex flex-col space-y-4">
         <div className="flex items-start max-w-lg pt-3">
           <img
-            src="/images/user3.jpg"
+            src="user.png"
             className="w-12 h-12 mr-3 rounded-full"
             alt="Image placeholder"
           />
@@ -39,7 +39,7 @@ const Output = () => {
 
         <div className="flex items-start self-end max-w-lg pt-3 space-x-3">
           <img
-            src="/images/user.jpg"
+            src="bot.png"
             className="order-2 w-12 h-12 ml-3 rounded-full"
             alt="Image placeholder"
           />
@@ -59,7 +59,7 @@ const Output = () => {
         </div>
         <div className="flex items-start max-w-lg pt-3">
           <img
-            src="/images/user3.jpg"
+            src="user.png"
             className="w-12 h-12 mr-3 rounded-full"
             alt="Image placeholder"
           />
@@ -95,7 +95,7 @@ const Output = () => {
         </div>
         <div className="flex items-start max-w-lg pt-3">
           <img
-            src="/images/user3.jpg"
+            src="user.png"
             className="w-12 h-12 mr-3 rounded-full"
             alt="Image placeholder"
           />
@@ -129,7 +129,7 @@ const Output = () => {
 
         <div className="flex items-start self-end max-w-lg pt-3 space-x-3">
           <img
-            src="/images/user.jpg"
+            src="bot.png"
             className="order-2 w-12 h-12 ml-3 rounded-full"
             alt="Image placeholder"
           />
