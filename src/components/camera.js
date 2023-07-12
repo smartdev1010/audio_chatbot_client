@@ -16,9 +16,7 @@ const Camera = () => {
   return (
     <div className="w-1/2 flex justify-center items-center">
       <div>
-        <h2 className="mb-5 text-center">
-          React Photo Capture using Webcam Examle
-        </h2>
+        <h2 className="mb-5 text-center">My Camera</h2>
         <div>
           {picture == "" ? (
             <Webcam
@@ -32,29 +30,6 @@ const Camera = () => {
             />
           ) : (
             <img src={picture} />
-          )}
-        </div>
-        <div>
-          {picture != "" ? (
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setPicture();
-              }}
-              className="btn btn-primary"
-            >
-              Retake
-            </button>
-          ) : (
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                capture();
-              }}
-              className="btn btn-danger"
-            >
-              Capture
-            </button>
           )}
         </div>
       </div>

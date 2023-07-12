@@ -1,8 +1,11 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import { useSelector, useDispatch } from "react-redux";
+import { addHistory } from "../historySlice";
 
 const Recording = () => {
   const {
@@ -12,15 +15,39 @@ const Recording = () => {
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
+  const history = useSelector((state) => state.history.history);
+  const dispatch = useDispatch();
   const [isrecording, setIsRecording] = useState(0);
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
 
-  const changeState = () => {
+  const changeState = async () => {
     if (!isrecording) SpeechRecognition.startListening();
-    else SpeechRecognition.stopListening();
+    else {
+      SpeechRecognition.stopListening();
+      setIsRecording(!isrecording);
+      let formData = new FormData();
+      // formData.append("prompt", transcript);
+      formData.append("prompt", "Tell me about the history of valleyball.");
+      dispatch(
+        addHistory({
+          type: "user",
+          value: "Tell me about the history of valleyball.",
+        })
+      );
+
+      const response = await axios.post(
+        "http://localhost:5000/chat2",
+        formData
+      );
+      const msg = new SpeechSynthesisUtterance();
+      msg.text = response.data.answer;
+
+      window.speechSynthesis.speak(msg);
+      dispatch(addHistory({ type: "bot", value: response.data.answer }));
+    }
     setIsRecording(!isrecording);
   };
 

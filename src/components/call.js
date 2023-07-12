@@ -41,6 +41,14 @@ const Call = () => {
         className="w-full text-sm border-gray-300 rounded-md border p-3 my-3"
       >
         <option>Customer Title</option>
+        <option>CEO</option>
+        <option>CFO</option>
+        <option>COO</option>
+        <option>CRO</option>
+        <option>CMO</option>
+        <option>VP of Operations</option>
+        <option>VP of Finance</option>
+        <option>VP of Sales</option>
       </select>
       <select
         name="owner"
@@ -48,6 +56,12 @@ const Call = () => {
         className="w-full text-sm border-gray-300 rounded-md border p-3 my-3"
       >
         <option>Customer Industry</option>
+        <option>E-Commerce</option>
+        <option>EdTech</option>
+        <option>FinTech</option>
+        <option>Manufacturing</option>
+        <option>Telehealth</option>
+        <option>PropTech</option>
       </select>
       <select
         name="owner"
@@ -55,6 +69,11 @@ const Call = () => {
         className="w-full text-sm border-gray-300 rounded-md border p-3 my-3"
       >
         <option>Company Size</option>
+        <option>1-99 Employees</option>
+        <option>100-499 employees</option>
+        <option>500-999 employees</option>
+        <option>1000-4999 employees</option>
+        <option>5000+ employees</option>
       </select>
 
       <button
