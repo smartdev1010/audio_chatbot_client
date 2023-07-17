@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Webcam from "react-webcam";
+import { useSelector, useDispatch } from "react-redux";
+
 const WebcamComponent = () => <Webcam />;
 const videoConstraints = {
   width: 400,
@@ -9,16 +11,13 @@ const videoConstraints = {
 const Camera = () => {
   const [picture, setPicture] = useState("");
   const webcamRef = React.useRef(null);
-  const capture = React.useCallback(() => {
-    const pictureSrc = webcamRef.current.getScreenshot();
-    setPicture(pictureSrc);
-  });
+  const isCall = useSelector((state) => state.history.isCall);
   return (
     <div className="w-1/2 flex justify-center items-center">
       <div>
         <h2 className="mb-5 text-center">My Camera</h2>
         <div>
-          {picture == "" ? (
+          {isCall == 1 ? (
             <Webcam
               audio={false}
               height={400}
@@ -29,7 +28,9 @@ const Camera = () => {
               className="rounded-md"
             />
           ) : (
-            <img src={picture} />
+            <h1>
+              <img className="w-[400px] h-[400px]" src="noCamera.png" />
+            </h1>
           )}
         </div>
       </div>

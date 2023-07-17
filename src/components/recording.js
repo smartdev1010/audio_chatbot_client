@@ -16,6 +16,8 @@ const Recording = () => {
   } = useSpeechRecognition();
 
   const history = useSelector((state) => state.history.history);
+  const isCall = useSelector((state) => state.history.isCall);
+  const settings = useSelector((state) => state.history.settings);
   const dispatch = useDispatch();
   const [isrecording, setIsRecording] = useState(0);
 
@@ -24,17 +26,26 @@ const Recording = () => {
   }
 
   const changeState = async () => {
+    if (!isCall) {
+      alert("Call is not started yet!!!");
+      return;
+    }
     if (!isrecording) SpeechRecognition.startListening();
     else {
       SpeechRecognition.stopListening();
       setIsRecording(!isrecording);
       let formData = new FormData();
       // formData.append("prompt", transcript);
-      formData.append("prompt", "Tell me about the history of valleyball.");
+      formData.append("prompt", transcript);
+      formData.append("user", settings.user);
+      formData.append("industry", settings.industry);
+      formData.append("c_size", settings.size);
+      formData.append("c_title", settings.customer);
+      formData.append("type", 0);
       dispatch(
         addHistory({
           type: "user",
-          value: "Tell me about the history of valleyball.",
+          value: transcript,
         })
       );
 
@@ -62,7 +73,6 @@ const Recording = () => {
           {isrecording ? "Stop" : "Start"}
         </span>
       </button>
-      <button onClick={resetTranscript}>Reset</button>
       <p>{transcript}</p>
     </div>
   );

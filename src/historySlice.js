@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   history: [],
+  isCall: 0,
+  settings: {},
 };
 
 export const historySlice = createSlice({
@@ -21,10 +23,20 @@ export const historySlice = createSlice({
         },
       ];
     },
+    startCall: (state) => {
+      state.isCall = 1;
+    },
+    endCall: (state) => {
+      state.isCall = 0;
+    },
+    setSettings: (state, payload) => {
+      state.settings = payload.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addHistory } = historySlice.actions;
+export const { addHistory, startCall, endCall, setSettings } =
+  historySlice.actions;
 
 export default historySlice.reducer;

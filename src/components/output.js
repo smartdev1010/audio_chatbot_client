@@ -1,9 +1,23 @@
 import { useSelector } from "react-redux";
+import { useRef, useEffect } from "react";
 
 const Output = () => {
   const history = useSelector((state) => state.history.history);
+  const settings = useSelector((state) => state.history.settings);
+  const bottomEl = useRef(null);
+  const scrollToBottom = () => {
+    bottomEl?.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [history]);
+
   return (
-    <div className="px-4 pt-6 space-y-4 lg:px-6 w-1/2">
+    <div
+      className="px-4 pt-6 space-y-4 lg:px-6 w-1/2 h-[650px] overflow-auto "
+      onClick={scrollToBottom}
+    >
       <div className="flex flex-col space-y-4">
         {history.map((item) =>
           item.type == "user" ? (
@@ -30,7 +44,7 @@ const Output = () => {
                         ></path>
                       </svg>
                       <span className="text-sm font-semibold text-gray-700 transition-colors duration-300 hover:text-gray-700">
-                        Taylor Brown
+                        {settings.user}
                       </span>
                     </span>
                   </div>
@@ -49,7 +63,7 @@ const Output = () => {
                 <div className="px-4 py-4 rounded-md bg-gradient-to-b from-gray-100 to-white lg:px-6 lg:pb-6">
                   <div className="flex items-end justify-between pb-3">
                     <span className="text-sm font-semibold text-gray-700 transition-colors duration-300 hover:text-gray-700">
-                      Morris Ward
+                      Alex
                     </span>
                   </div>
                   <p className="block text-sm text-gray-800">{item.value}</p>
@@ -59,6 +73,7 @@ const Output = () => {
           )
         )}
       </div>
+      <div ref={bottomEl}></div>
     </div>
   );
 };
