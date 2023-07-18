@@ -42,6 +42,7 @@ const Recording = () => {
       formData.append("c_size", settings.size);
       formData.append("c_title", settings.customer);
       formData.append("type", 0);
+      formData.append("history", JSON.stringify(history));
       dispatch(
         addHistory({
           type: "user",
