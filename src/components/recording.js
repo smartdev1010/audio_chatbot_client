@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -19,7 +19,11 @@ const Recording = () => {
   const isCall = useSelector((state) => state.history.isCall);
   const settings = useSelector((state) => state.history.settings);
   const dispatch = useDispatch();
-  const [isrecording, setIsRecording] = useState(0);
+  const [isrecording, setIsRecording] = useState(false);
+  useEffect(() => {
+    SpeechRecognition.startListening({ continuous: false });
+    SpeechRecognition.stopListening();
+  }, []);
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
@@ -29,38 +33,45 @@ const Recording = () => {
     if (!isCall) {
       alert("Call is not started yet!!!");
       return;
-    }
-    if (!isrecording) SpeechRecognition.startListening();
-    else {
-      SpeechRecognition.stopListening();
-      setIsRecording(!isrecording);
-      let formData = new FormData();
-      // formData.append("prompt", transcript);
-      formData.append("prompt", transcript);
-      formData.append("user", settings.user);
-      formData.append("industry", settings.industry);
-      formData.append("c_size", settings.size);
-      formData.append("c_title", settings.customer);
-      formData.append("type", 0);
-      formData.append("history", JSON.stringify(history));
-      dispatch(
-        addHistory({
-          type: "user",
-          value: transcript,
-        })
-      );
+    } else {
+      if (!isrecording) {
+        SpeechRecognition.startListening({ continuous: true });
+        setIsRecording(true);
+      } else {
+        setIsRecording(false);
+        SpeechRecognition.stopListening();
+        let formData = new FormData();
+        // formData.append("prompt", transcript);
+        formData.append("prompt", transcript);
+        formData.append("user", settings.user);
+        formData.append("industry", settings.industry);
+        formData.append("c_size", settings.size);
+        formData.append("c_title", settings.customer);
+        formData.append("type", 0);
+        formData.append("history", JSON.stringify(history));
 
-      const response = await axios.post(
-        "http://localhost:5000/chat2",
-        formData
-      );
-      const msg = new SpeechSynthesisUtterance();
-      msg.text = response.data.answer;
+        console.log(formData);
 
-      window.speechSynthesis.speak(msg);
-      dispatch(addHistory({ type: "bot", value: response.data.answer }));
+        dispatch(
+          addHistory({
+            type: "user",
+            value: transcript,
+          })
+        );
+
+        const response = await axios.post(
+          "http://localhost:5000/chat2",
+          formData
+        );
+        const msg = new SpeechSynthesisUtterance();
+        msg.text = response.data.answer;
+
+        window.speechSynthesis.speak(msg);
+        dispatch(addHistory({ type: "bot", value: response.data.answer }));
+
+        resetTranscript();
+      }
     }
-    setIsRecording(!isrecording);
   };
 
   return (

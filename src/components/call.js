@@ -13,7 +13,7 @@ const Call = () => {
   const [industry, setIndustry] = useState("");
   const [size, setSize] = useState("");
 
-  const history = useSelector((state) => state.history.isCall);
+  const history = useSelector((state) => state.history.history);
   const dispatch = useDispatch();
 
   const callStarted = () => {
@@ -44,6 +44,7 @@ const Call = () => {
     formData.append("c_size", size);
     formData.append("c_title", customer);
     formData.append("type", 1);
+    formData.append("history", JSON.stringify(history));
 
     const response = await axios.post("http://localhost:5000/chat2", formData);
     const msg = new SpeechSynthesisUtterance();
