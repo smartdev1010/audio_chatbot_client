@@ -5,7 +5,8 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { useSelector, useDispatch } from "react-redux";
-import { addHistory } from "../historySlice";
+import { addHistory, setUrl } from "../historySlice";
+import { talkStream } from "../streaming-client-api";
 
 const Recording = () => {
   const {
@@ -37,6 +38,7 @@ const Recording = () => {
       if (!isrecording) {
         SpeechRecognition.startListening({ continuous: true });
         setIsRecording(true);
+        dispatch(setUrl({ url: "" }));
       } else {
         setIsRecording(false);
         SpeechRecognition.stopListening();
@@ -50,8 +52,6 @@ const Recording = () => {
         formData.append("type", 0);
         formData.append("history", JSON.stringify(history));
 
-        console.log(formData);
-
         dispatch(
           addHistory({
             type: "user",
@@ -59,15 +59,17 @@ const Recording = () => {
           })
         );
 
-        const response = await axios.post(
+        let response = await axios.post(
           "http://localhost:5000/chat2",
           formData
         );
         const msg = new SpeechSynthesisUtterance();
         msg.text = response.data.answer;
 
-        window.speechSynthesis.speak(msg);
-        dispatch(addHistory({ type: "bot", value: response.data.answer }));
+        await talkStream(msg.text);
+
+        // window.speechSynthesis.speak(msg);
+        dispatch(addHistory({ type: "bot", value: msg.text }));
 
         resetTranscript();
       }
@@ -76,7 +78,6 @@ const Recording = () => {
 
   return (
     <div>
-      <p>Microphone: {listening ? "on" : "off"}</p>
       <button
         className="flex px-4 py-3 text-sm font-semibold leading-4 transition-colors duration-300 bg-blue-600 rounded-md hover:bg-blue-700 text-blue-50 w-full my-3"
         onClick={() => changeState()}

@@ -1,6 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import Call from "./components/call";
+import Avatar from "./components/avatar";
 import Output from "./components/output";
 import Camera from "./components/camera";
 import Recording from "./components/recording";
@@ -14,10 +15,11 @@ function App() {
       <Call className="w-1/4" />
       <div className="w-3/4">
         <Recording history={history} setHistory={setHistory} />
-        <div className="w-full flex">
+        <div className="w-full flex mb-5">
           <Camera />
-          <Output history={history} />
+          <Avatar />
         </div>
+        <Output history={history} />
       </div>
     </div>
   );

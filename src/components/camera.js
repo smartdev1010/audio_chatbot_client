@@ -15,7 +15,6 @@ const Camera = () => {
   return (
     <div className="w-1/2 flex justify-center items-center">
       <div>
-        <h2 className="mb-5 text-center">My Camera</h2>
         <div>
           {isCall == 1 ? (
             <Webcam

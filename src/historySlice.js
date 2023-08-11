@@ -4,6 +4,7 @@ const initialState = {
   history: [],
   isCall: 0,
   settings: {},
+  currenturl: "",
 };
 
 export const historySlice = createSlice({
@@ -32,11 +33,16 @@ export const historySlice = createSlice({
     setSettings: (state, payload) => {
       state.settings = payload.payload;
     },
+    setUrl: (state, payload) => {
+      console.log(payload.payload["url"]);
+      state.currenturl = payload.payload["url"];
+      console.log(state.currenturl);
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addHistory, startCall, endCall, setSettings } =
+export const { addHistory, startCall, endCall, setSettings, setUrl } =
   historySlice.actions;
 
 export default historySlice.reducer;

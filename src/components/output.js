@@ -4,6 +4,8 @@ import { useRef, useEffect } from "react";
 const Output = () => {
   const history = useSelector((state) => state.history.history);
   const settings = useSelector((state) => state.history.settings);
+  const url = useSelector((state) => state.history.currenturl);
+  console.log(url);
   const bottomEl = useRef(null);
   const scrollToBottom = () => {
     bottomEl?.current?.scrollIntoView({ behavior: "smooth" });
@@ -14,10 +16,7 @@ const Output = () => {
   }, [history]);
 
   return (
-    <div
-      className="px-4 pt-6 space-y-4 lg:px-6 w-1/2 h-[650px] overflow-auto "
-      onClick={scrollToBottom}
-    >
+    <div className="px-4 pt-6 space-y-4 lg:px-6 h-[350px] overflow-auto">
       <div className="flex flex-col space-y-4">
         {history.map((item) =>
           item.type == "user" ? (

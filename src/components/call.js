@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { startCall, endCall, setSettings, addHistory } from "../historySlice";
 import axios from "axios";
+import { startStream, talkStream } from "../streaming-client-api";
 
 const Call = () => {
   const [startTime, setStartTime] = useState(0);
@@ -16,7 +17,7 @@ const Call = () => {
   const history = useSelector((state) => state.history.history);
   const dispatch = useDispatch();
 
-  const callStarted = () => {
+  const callStarted = async () => {
     const current = Date.now();
     setStartTime(current);
     setCall(1);
@@ -29,6 +30,7 @@ const Call = () => {
         size,
       })
     );
+    startStream();
   };
 
   const callEnded = async () => {
@@ -50,7 +52,9 @@ const Call = () => {
     const msg = new SpeechSynthesisUtterance();
     msg.text = response.data.answer;
 
-    window.speechSynthesis.speak(msg);
+    await talkStream(msg.text);
+
+    // window.speechSynthesis.speak(msg);
     dispatch(addHistory({ type: "bot", value: response.data.answer }));
   };
 
